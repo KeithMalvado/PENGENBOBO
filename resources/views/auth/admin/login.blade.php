@@ -91,7 +91,7 @@
         <div class="right">
             <div class="form-wrapper">
                 <h3>Login as Event Organizer</h3>
-                <form action="{{ route('admin.login.submit') }}" method="POST">
+                <form method="POST" action="{{ route('admin.login.submit') }}">
 
                     @csrf
                     <div class="form-group">

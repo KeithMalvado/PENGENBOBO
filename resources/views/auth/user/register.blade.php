@@ -168,7 +168,7 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
-                            window.location.href = "{{ route('user.dashboard') }}";
+                            window.location.href = "{{ route('user.landingpage') }}";
                         } else {
                             alert("Login gagal: " + data.message);
                         }
@@ -208,6 +208,28 @@
         .btn-google:hover { background-color: #f1f1f1; }
         .text-center { text-align: center; }
         .small { font-size: 14px; }
+
+       
+        .alert-danger {
+            background-color: #f8d7da; 
+            color: #721c24;
+            border: 1px solid #f5c6cb; 
+            padding: 10px 15px; 
+            margin-bottom: 20px; 
+            border-radius: 4px; 
+            text-align: center; 
+            font-size: 14px;
+        }
+        .alert-success {
+            background-color: #d4edda; 
+            color: #155724;
+            border: 1px solid #c3e6cb; 
+            padding: 10px 15px; 
+            margin-bottom: 20px; 
+            border-radius: 4px; 
+            text-align: center; 
+            font-size: 14px;
+        }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -232,6 +254,10 @@
         <div class="right">
             <div class="form-wrapper">
                 <h3>Register Account</h3>
+
+                <!-- Alert Messages -->
+                <div id="alert-message"></div>
+
                 <form id="registerForm">
                     <div class="form-group">
                         <input type="text" name="name" placeholder="Nama Lengkap" required>
@@ -245,13 +271,9 @@
                     <div class="form-group">
                         <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" required>
                     </div>
-                    <button type="submit" class="btn-submit">Daftar Manual →</button>
+                    <button type="submit" class="btn-submit">Daftar →</button>
                 </form>
-                <div class="text-center small" style="margin: 10px 0;">atau</div>
-                <a href="#" class="btn-google" id="googleLogin">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google Logo">
-                    Daftar dengan Google
-                </a>
+
                 <p class="text-center small" style="margin-top: 15px;">
                     Sudah punya akun?
                     <a href="{{ route('user.login') }}" style="color: #F4A825; text-decoration: none;">Login</a>
@@ -261,15 +283,23 @@
     </div>
 
     <script>
+        const alertBox = document.getElementById('alert-message');
+
+        function showAlert(message, type = 'danger') {
+            alertBox.innerHTML = `<div class="alert-${type}">${message}</div>`;
+        }
+
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const name = this.name.value;
-            const email = this.email.value;
+            alertBox.innerHTML = '';
+
+            const name = this.name.value.trim();
+            const email = this.email.value.trim();
             const password = this.password.value;
             const confirmPassword = this.password_confirmation.value;
 
             if (password !== confirmPassword) {
-                alert("Konfirmasi password tidak cocok");
+                showAlert("Konfirmasi password tidak cocok.");
                 return;
             }
 
@@ -278,14 +308,16 @@
                 const user = userCredential.user;
                 await user.updateProfile({ displayName: name });
                 await user.sendEmailVerification();
-                alert("Akun berhasil dibuat. Silakan cek email kamu untuk verifikasi.");
+                showAlert("Akun berhasil dibuat. Silakan cek email kamu untuk verifikasi.", "success");
+                this.reset();
             } catch (error) {
-                alert("Registrasi gagal: " + error.message);
+                showAlert("Registrasi gagal: " + error.message);
             }
         });
 
-        document.getElementById('googleLogin').addEventListener('click', function(e) {
+        document.getElementById('googleLogin')?.addEventListener('click', function(e) {
             e.preventDefault();
+            alertBox.innerHTML = '';
             auth.signInWithPopup(provider)
                 .then(async (result) => {
                     const idToken = await result.user.getIdToken();
@@ -300,14 +332,14 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
-                            window.location.href = "{{ route('user.dashboard') }}";
+                            window.location.href = "{{ route('user.landingpage') }}";
                         } else {
-                            alert("Login gagal: " + data.message);
+                            showAlert("Login gagal: " + data.message);
                         }
                     });
                 })
                 .catch(error => {
-                    alert("Login gagal: " + error.message);
+                    showAlert("Login gagal: " + error.message);
                 });
         });
     </script>

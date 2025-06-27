@@ -35,6 +35,6 @@ class AdminRegisterController extends Controller
 
         Auth::guard('admin')->login($admin);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Berhasil register sebagai admin.');
+        return redirect()->route('admin.login')->with('success', 'Berhasil register sebagai admin.');
     }
 }

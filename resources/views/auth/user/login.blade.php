@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login User | EvenTara</title>
 
-    <!-- Google Fonts Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -78,21 +77,47 @@
         .btn-submit:hover {
             background-color: #d9931f;
         }
+
+        .alert-danger {
+            background-color: #f8d7da; 
+            color: #721c24;
+            border: 1px solid #f5c6cb; 
+            padding: 10px 15px; 
+            margin-bottom: 20px; 
+            border-radius: 4px; 
+            text-align: center; 
+            font-size: 14px;
+        }
+        .alert-danger ul {
+            list-style: none; 
+            padding: 0;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- KIRI -->
         <div class="left">
             <img src="{{ asset('images/registeruser.png') }}" alt="Login User">
         </div>
 
-        <!-- KANAN -->
         <div class="right">
             <div class="form-wrapper">
                 <h3>Login Account</h3>
                 <form action="{{ route('user.login.submit') }}" method="POST">
                     @csrf
+
+                    @if ($errors->any())
+                        <div class="alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+
                     <div class="form-group">
                         <input type="email" name="email" placeholder="Email" required>
                     </div>

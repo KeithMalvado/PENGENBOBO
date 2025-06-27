@@ -9,16 +9,16 @@ return new class extends Migration {
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('admin_id')->constrained('admins')->onDelete('cascade'); // Relasi ke tabel admins
+            $table->foreignId('admin_id')->constrained('admins')->onDelete('cascade'); 
             $table->string('nama');
             $table->date('tanggal');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->string('lokasi');
             $table->text('deskripsi')->nullable();
-            $table->string('gambar')->nullable(); // Path ke file gambar
+            $table->string('gambar')->nullable(); 
             $table->timestamps();
-            $table->softDeletes(); // Untuk soft delete
+            $table->softDeletes(); 
         });
     }
 

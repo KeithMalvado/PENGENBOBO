@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.app') {{-- Menggunakan layout utama --}}
+
+@section('title', 'Beranda | EvenTara') {{-- Mengatur judul halaman --}}
 
 @section('content')
 
@@ -18,6 +20,7 @@
 <section class="py-5">
     <div class="container">
         <h2 class="fw-bold mb-4">Upcoming Events</h2>
+        {{-- Tambahkan konten untuk upcoming events di sini --}}
     </div>
 </section>
 
@@ -34,15 +37,24 @@
     </div>
 </section>
 
-<script>
-    window.addEventListener('scroll', function() {
-        const navbar = document.getElementById('navbar');
-        if (window.scrollY > 100) {
-            navbar.style.background = 'linear-gradient(to right, rgba(162, 140, 74, 0.9), rgba(36, 30, 1, 0.9))';
-        } else {
-            navbar.style.background = 'linear-gradient(to right, rgba(162, 140, 74, 0.0), rgba(36, 30, 1, 0.0))';
-        }
-    });
-</script>
+{{-- Script untuk navbar scroll effect sudah dipindahkan ke layouts/app.blade.php --}}
 
 @endsection
+
+{{-- Notifikasi logout berhasil --}}
+@if (session('logout_success'))
+    <script>
+        // Pakai SweetAlert kalau tersedia
+        if (typeof Swal !== "undefined") {
+            Swal.fire({
+                title: 'Logout Berhasil!',
+                text: '{{ session('logout_success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        } else {
+            // Fallback ke alert biasa
+            alert('{{ session('logout_success') }}');
+        }
+    </script>
+@endif

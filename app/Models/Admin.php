@@ -15,6 +15,7 @@ class Admin extends Authenticatable
         'email',
         'phone',
         'password',
+        'firebase_uid'
     ];
 
     protected $hidden = [
